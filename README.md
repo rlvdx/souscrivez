@@ -22,5 +22,6 @@ Trace what paid subscriptions to services like music streaming, password manager
 ## Technologies
 - PHP 8.5
 - PHPUnit
+- PHPStan
 - SQLite
 - Symfony Messenger

@@ -8,9 +8,7 @@ final readonly class AddParticipantToSubscription
 {
     public function __construct(
         public string $subscriptionId,
-        public string $firstName,
-        public string $lastName,
-        public string $email
-    ) {
-    }
+        public string $participantName,
+        public string $participantEmail
+    ) {}
 }

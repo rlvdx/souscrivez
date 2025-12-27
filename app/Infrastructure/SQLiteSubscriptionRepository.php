@@ -79,13 +79,12 @@ final readonly class SQLiteSubscriptionRepository implements SubscriptionReposit
             VALUES (:id, :subscription_id, :first_name, :last_name, :email)
         ');
 
-        foreach ($subscription->getParticipants() as $participant) {
+        foreach ($subscription->participants as $participant) {
             $stmt->execute([
-                'id' => $participant->getId(),
+                'id' => $participant->id,
                 'subscription_id' => $subscription->getId()->toString(),
-                'first_name' => $participant->firstName,
-                'last_name' => $participant->lastName,
-                'email' => $participant->email,
+                'name' => $participant->getName(),
+                'email' => $participant->getEmail(),
             ]);
         }
     }

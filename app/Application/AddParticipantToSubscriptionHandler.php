@@ -12,8 +12,7 @@ final readonly class AddParticipantToSubscriptionHandler
 {
     public function __construct(
         private SubscriptionRepository $repository
-    ) {
-    }
+    ) {}
 
     public function __invoke(AddParticipantToSubscription $command): void
     {
@@ -24,9 +23,8 @@ final readonly class AddParticipantToSubscriptionHandler
         }
 
         $subscription->addParticipant(new Participant(
-            $command->firstName,
-            $command->lastName,
-            $command->email
+            $command->participantName,
+            $command->participantEmail,
         ));
 
         $this->repository->save($subscription);

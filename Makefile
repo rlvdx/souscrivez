@@ -7,3 +7,7 @@ help:
 .PHONY: test
 test: ## Run phpunit tests
 	vendor/bin/phpunit
+
+.PHONY: lint
+lint: ## Run phpstan
+	vendor/bin/phpstan analyze

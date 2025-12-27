@@ -15,11 +15,11 @@ use App\Application\GetSubscriptionDetailsHandler;
 use App\Application\GetSubscriptions;
 use App\Application\GetSubscriptionsHandler;
 use App\Infrastructure\SQLiteSubscriptionRepository;
+use PDO;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Messenger\Handler\HandlersLocator;
 use Symfony\Component\Messenger\MessageBus;
 use Symfony\Component\Messenger\Middleware\HandleMessageMiddleware;
-use PDO;
 
 abstract class FeatureTestCase extends TestCase
 {

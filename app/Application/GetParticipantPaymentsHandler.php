@@ -25,7 +25,7 @@ final readonly class GetParticipantPaymentsHandler
         
         foreach ($subscriptions as $subscription) {
             $isParticipant = false;
-            foreach ($subscription->getParticipants() as $participant) {
+            foreach ($subscription->participants as $participant) {
                 if ($participant->email === $query->email) {
                     $isParticipant = true;
                     break;

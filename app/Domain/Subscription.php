@@ -4,21 +4,27 @@ declare(strict_types=1);
 
 namespace App\Domain;
 
+use DateMalformedStringException;
 use DateTimeImmutable;
 
 final class Subscription
 {
-    /** @var Participant[] */
-    private array $participants = [];
+    /** @var Participants */
+    public Participants $participants {
+        get {
+            return $this->participants;
+        }
+    }
 
     public function __construct(
-        private readonly SubscriptionId $id,
-        private string $serviceName,
-        private int $availableSeats,
-        private DateTimeImmutable $subscribedOn,
-        private Frequency $frequency,
-        private Price $price
+        private readonly SubscriptionId    $id,
+        private readonly string            $serviceName,
+        private readonly int               $availableSeats,
+        private readonly DateTimeImmutable $subscribedOn,
+        private readonly Frequency         $frequency,
+        private readonly Price             $price
     ) {
+        $this->participants = Participants::empty();
     }
 
     public function getId(): SubscriptionId
@@ -58,18 +64,12 @@ final class Subscription
         }
 
         foreach ($this->participants as $existing) {
-            if ($existing->email === $participant->email) {
+            if ($existing->email === $participant->getEmail()) {
                 throw new \DomainException('Participant already added');
             }
         }
 
-        $this->participants[] = $participant;
-    }
-
-    /** @return Participant[] */
-    public function getParticipants(): array
-    {
-        return $this->participants;
+        $this->participants->add($participant);
     }
 
     public function getPricePerParticipant(): Price
@@ -77,7 +77,10 @@ final class Subscription
         return new Price($this->price->amount / $this->availableSeats, $this->price->currency);
     }
 
-    /** @return Payment[] */
+    /**
+     * @return Payment[]
+     * @throws DateMalformedStringException
+     */
     public function getPaymentHistory(DateTimeImmutable $until): array
     {
         $payments = [];
@@ -92,6 +95,9 @@ final class Subscription
         return $payments;
     }
 
+    /**
+     * @throws DateMalformedStringException
+     */
     public function getNextPaymentDate(DateTimeImmutable $after): DateTimeImmutable
     {
         $current = $this->subscribedOn;
@@ -102,6 +108,9 @@ final class Subscription
         return $current;
     }
 
+    /**
+     * @throws DateMalformedStringException
+     */
     private function getNextDate(DateTimeImmutable $date): DateTimeImmutable
     {
         return match ($this->frequency) {
